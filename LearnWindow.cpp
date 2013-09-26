@@ -1,11 +1,10 @@
-#include <QtGui>
 #include "LearnWindow.h"
 
-LearnWindow::LearnWindow(QWidget *parent) :
+LearnWindow::LearnWindow(QWidget *parent, QString datafile, QString wintitle) :
     QDialog (parent)
 {
     LearnTextBrows=new QTextBrowser();
-    QFile LearnFile("C:\\Users\\Aleksandr\\Desktop\\Work\\Work\\DataFile.txt");
+    QFile LearnFile(datafile);
     LearnFile.open(QFile::ReadOnly);
     QByteArray data=LearnFile.readAll();
     QString str=QString::fromUtf8(data);
@@ -31,11 +30,19 @@ LearnWindow::LearnWindow(QWidget *parent) :
     LearnLayout->addLayout(ButtonLayout);
 
     setLayout(LearnLayout);
-    setWindowTitle(tr("Text for learning"));
+    setWindowTitle(wintitle);
     this->resize(800,600);
-
 }
 
+LearnWindow::~LearnWindow()
+{
+    delete LearnTextBrows;
+    delete NextText;
+    delete BackText;
+    delete CloseText;
+}
+
+//Обрабатываем нажатие кнопки завершения
 void LearnWindow::CloseTextPress()
 {
     QWidget::parentWidget()->show();
